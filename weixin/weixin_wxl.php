@@ -1,6 +1,4 @@
 <?php
-<<<<<<< HEAD
-=======
 // define(TOKEN,"wangxilong");
 
 // $weixin=new weichat();
@@ -129,7 +127,6 @@
 
 
 
->>>>>>> 123
 	define(TOKEN,"wangxilong");
 	$weixin=new wechat();
 	if( isset($_GET['echostr']) && !empty($_GET['echostr']) ){
@@ -161,16 +158,11 @@
 		function handle(){
 			//接受post传递的xml数据
 			$postxml=$GLOBALS['HTTP_RAW_POST_DATA'];
-<<<<<<< HEAD
-			//xml数据转化成数组
-			$postobj=simplexml_load_string($postxml,"SimpleXMLElement",LIBXML_NOCDATA);
-=======
 			//写日志
 			$this->logger($postxml);
 			//xml数据转化成数组
 			$postobj=simplexml_load_string($postxml,"SimpleXMLElement",LIBXML_NOCDATA);
 
->>>>>>> 123
 			switch ($postobj->MsgType) {
 				case 'text':
 					$result=$this->checkText($postobj);
@@ -191,11 +183,7 @@
 				// 	$result=$this->replyNews($postobj)
 				// 	break;
 				default:
-<<<<<<< HEAD
-					$result=$this->replyFindNoneType($postobj)
-=======
 					$result=$this->replyFindNoneType($postobj);
->>>>>>> 123
 					break;
 			}
 			echo $result;
@@ -224,12 +212,14 @@
 				$backWord="你也好";
 				$rt=$this->replyText($backWord,$postobj);
 			}
-<<<<<<< HEAD
-
-=======
-			if(strstr($word,"图文")){
-				$backWord=array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
+			if(strstr($word,"单图文")){
+				$backWord[]=array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
 		
+			}
+			if(strstr($word,"多图文")){
+				$backWord[]=array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
+				$backWord[]=array('Title' =>"标题2",'Description'=>"描述2",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
+				$backWord[]=array('Title' =>"标题3",'Description'=>"描述3",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
 			}
 
 			if(is_array($backWord)){
@@ -237,7 +227,6 @@
 			}else{
 				$rt=$this->replyText($backWord,$postobj);
 			}
->>>>>>> 123
 			return $rt;
 		}
 
@@ -254,26 +243,28 @@
 			$rt=sprintf($xml,$postobj->FromUserName,$postobj->ToUserName,time(),$backWord);
 			return $rt;
 		}
-<<<<<<< HEAD
-=======
 		//回复图文消息
 		function replyNews($backWord,$postobj){
+			$item="<item>
+				<Title><![CDATA[%s]]></Title> 
+				<Description><![CDATA[%s]]></Description>
+				<PicUrl><![CDATA[%s]]></PicUrl>
+				<Url><![CDATA[%s]]></Url>
+				</item>";
+			$back_item="";
+			foreach($backWord as $v){
+				$back_item.=sprintf($item,$v['Title'],$v['Description'],$v['PicUrl'],$v['Url']);
+			}
+
 			$xml="<xml>
 				<ToUserName><![CDATA[%s]]></ToUserName>
 				<FromUserName><![CDATA[%s]]></FromUserName>
 				<CreateTime>%s</CreateTime>
 				<MsgType><![CDATA[news]]></MsgType>
-				<ArticleCount>1</ArticleCount>
-				<Articles>
-				<item>
-				<Title><![CDATA[%s]]></Title> 
-				<Description><![CDATA[%s]]></Description>
-				<PicUrl><![CDATA[%s]]></PicUrl>
-				<Url><![CDATA[%s]]></Url>
-				</item>
-				</Articles>
+				<ArticleCount>%s</ArticleCount>
+				<Articles>%s</Articles>
 				</xml>";
-			$result=sprintf($xml,$postobj->FromUserName,$postobj->ToUserName,time(),$backWord['Title'],$backWord['Description'],$backWord['PicUrl'],$backWord['Url']);
+			$result=sprintf($xml,$postobj->FromUserName,$postobj->ToUserName,time(),count($backWord),$back_item);
 			return $result;
 		}
 
@@ -290,6 +281,5 @@
 			file_put_contents($file, $log_content,FILE_APPEND);
 		}
 
->>>>>>> 123
 	}
 ?>
