@@ -51,22 +51,22 @@ $this->logger($postxml);
 				$result=$this->testingText($postObj);
 				break;
 			case 'image':
-				//$result=$this->replyText($postObj);
+				//$result=$this->testingText($postObj);
 				break;
 			case 'voice':
-				//$result=$this->replyText($postObj);
+				$result=$this->testingVoice($postObj);
 				break;
 			case 'video':
-				//$result=$this->replyText($postObj);
+				//$result=$this->testingText($postObj);
 				break;
 			case 'shortvideo':
-				//$result=$this->replyText($postObj);
+				//$result=$this->testingText($postObj);
 				break;
 			case 'location':
-				//$result=$this->replyText($postObj);
+				//$result=$this->testingText($postObj);
 				break;
 			case 'link':
-				//$result=$this->replyText($postObj);
+				//$result=$this->testingText($postObj);
 				break;
 			default:
 				$result=$this->undefindType($postObj);
@@ -74,41 +74,56 @@ $this->logger($postxml);
 		}
 
 		echo $result;
-/*		if($postObj->Content=="你好"){
-			echo $this->replyText($postObj);
-		}*/
 
 
 	}
+	//接收语音消息的方法
+	public function testingVoice($postObj){
+		$keyword=trim($postObj->Recognition);
+		if(strstr($keyword,"干嘛") || strstr($keyword,"干啥") ){
+			$backContent="想你那呗！";
+		}else{
+			$backContent="语音未识别,公众号使用方法如下\n输入1:查看新闻\n输入2:查看商品\n";
+		}
+		//$backContent=$postObj->Recognition;
+		$result=$this->replyText($postObj,$backContent);
+		return $result;
+	}
+
+
+
 	//回复文本消息的方法
 	public function testingText($postObj){
 		$keyword=trim($postObj->Content);
-		//echo "21222";
-		if(strstr($keyword,"你好")){
-			$backContent="我是回复的消息";
-		}
-		if(strstr($keyword,"单图文")){
+		if(strstr($keyword,"文本")){
+			$backContent="回复的是文本消息";
+		}else if(strstr($keyword,"单图文")){
 			//$backContent="接收的是图文";
 			$backContent[] = array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508566212510&di=fb755a9d0984e5fabf66ae260f4f2ad2&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F7dd98d1001e93901d41bc6fe72ec54e737d196d1.jpg",'Url' =>"http://slide.news.sina.com.cn/c/slide_1_2841_211740.html#p=1");
-		}
-		if(strstr($keyword,"多图文")){
+		}else if(strstr($keyword,"多图文")){
 			$backContent[] = array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508566212510&di=fb755a9d0984e5fabf66ae260f4f2ad2&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F7dd98d1001e93901d41bc6fe72ec54e737d196d1.jpg",'Url' =>"http://slide.news.sina.com.cn/c/slide_1_2841_211740.html#p=1");
 
 			$backContent[] = array('Title' =>"标题2",'Description'=>"描述2",'PicUrl' =>"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508566212510&di=fb755a9d0984e5fabf66ae260f4f2ad2&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F7dd98d1001e93901d41bc6fe72ec54e737d196d1.jpg",'Url' =>"http://slide.news.sina.com.cn/c/slide_1_2841_211740.html#p=1");
 
 			$backContent[] = array('Title' =>"标题3",'Description'=>"描述3",'PicUrl' =>"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508566212510&di=fb755a9d0984e5fabf66ae260f4f2ad2&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F7dd98d1001e93901d41bc6fe72ec54e737d196d1.jpg",'Url' =>"http://slide.news.sina.com.cn/c/slide_1_2841_211740.html#p=1");
 
+		}elseif(strstr($keyword,"音乐")){
+			$backContent = array('Title' =>"张仲华话语金曲" ,'Description' =>"销量可绕地球3圈" ,'MusicUrl' =>"http://dx.sc.chinaz.com/Files/DownLoad/sound1/201706/8868.mp3" ,'HQMusicUrl' =>"http://dx.sc.chinaz.com/Files/DownLoad/sound1/201706/8868.mp3");
+		}else{
+			$backContent="关键词未识别,公众号使用方法如下\n输入1:查看新闻\n输入2:查看商品\n";
 		}
 
 		if(is_array($backContent)){
-			$result=$this->replyNews($postObj,$backContent);
+			if (isset($backContent['MusicUrl']) && !empty($backContent['MusicUrl']) ) {
+				$result=$this->replyMusic($postObj,$backContent);
+			}else{
+				$result=$this->replyNews($postObj,$backContent);
+
+			}
 		}else{
 			$result=$this->replyText($postObj,$backContent);
 		}
-			//$result=$this->replyText($postObj,$backContent);
 
-		
-		//echo "3333";
 		return $result;
 
 	}
@@ -140,7 +155,6 @@ $this->logger($postxml);
 					$back_item.=sprintf($item,$value['Title'],$value['Description'],$value['PicUrl'],$value['Url']);
 				}
 
-
 		$xml="<xml>
 				<ToUserName><![CDATA[%s]]></ToUserName>
 				<FromUserName><![CDATA[%s]]></FromUserName>
@@ -151,6 +165,24 @@ $this->logger($postxml);
 				</xml>";
 			$result=sprintf($xml,$postObj->FromUserName,$postObj->ToUserName,time(),count($backContent),$back_item);
 		return $result;
+		}
+
+		public function replyMusic($postObj,$backContent){
+			$xml="<xml>
+				<ToUserName><![CDATA[%s]]></ToUserName>
+				<FromUserName><![CDATA[%s]]></FromUserName>
+				<CreateTime>%s</CreateTime>
+				<MsgType><![CDATA[music]]></MsgType>
+				<Music>
+				<Title><![CDATA[%s]]></Title>
+				<Description><![CDATA[%s]]></Description>
+				<MusicUrl><![CDATA[%s]]></MusicUrl>
+				<HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+				</Music>
+				</xml>";
+				$result=sprintf($xml,$postObj->FromUserName,$postObj->ToUserName,time(),$backContent['Title'],$backContent['Description'],$backContent['MusicUrl'],$backContent['HQMusicUrl']);
+			return $result;
+
 		}
 
 

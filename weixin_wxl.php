@@ -168,19 +168,13 @@
 					$result=$this->checkText($postobj);
 					break;
 				// case 'image':
-				// 	$result=$this->replyImage($postobj)
+				// 	$result=$this->checkImage($postobj);
 				// 	break;
-				// case 'voice':
-				// 	$result=$this->replyVoice($postobj)
-				// 	break;
+				case 'voice':
+					$result=$this->checkVoice($postobj);
+					break;
 				// case 'video':
-				// 	$result=$this->replyVideo($postobj)
-				// 	break;
-				// case 'music':
-				// 	$result=$this->replyMusic($postobj)
-				// 	break;
-				// case 'news':
-				// 	$result=$this->replyNews($postobj)
+				// 	$result=$this->checkVideo($postobj);
 				// 	break;
 				default:
 					$result=$this->replyFindNoneType($postobj);
@@ -203,6 +197,19 @@
 		}
 
 
+		//接受语音
+		function checkVoice($postobj){
+			$keyword=trim($postObj->Recognition);
+			if($keyword=="我是你爸爸" || $keyword=="我是你爹"){
+				$backword="我是你爷爷";
+			}else{
+				$backword="我是你爸爸";
+			}
+			$rt=$this->replyText($backword,$postobj);
+			return $rt;
+		}
+
+
 		//检验处理文本消息函数
 		function checkText($postobj){
 			//去空格，后面还可以有多个参数
@@ -211,23 +218,47 @@
 			if(strstr($word,"你好")){
 				$backWord="你也好";
 				$rt=$this->replyText($backWord,$postobj);
-			}
-			if(strstr($word,"单图文")){
+			}else if(strstr($word,"单图文")){
 				$backWord[]=array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
 		
-			}
-			if(strstr($word,"多图文")){
+			}else if(strstr($word,"多图文")){
 				$backWord[]=array('Title' =>"标题1",'Description'=>"描述1",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
 				$backWord[]=array('Title' =>"标题2",'Description'=>"描述2",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
 				$backWord[]=array('Title' =>"标题3",'Description'=>"描述3",'PicUrl' =>"https://mmbiz.qpic.cn/mmbiz_png/M0rWuibMWRpy0xEctG863ma0HJRf9UEAOZJBO3SHLa0louLicia9tDb0x12dzicwgSiakkJ8OdljxpsaibkRMMBmf3AA/0?wx_fmt=png",'Url' =>"https://mp.weixin.qq.com/s?__biz=MzU0NzQxMzQxMw==&tempkey=OTI3X2Fhcno5R21tS0t4K3J6YkVEZTlrV3RnQ3Jrem1rbjF3Z25FV0Y2WE4zYm1Bc2V1MjV5MWxjY0hSdEdBVWZ5RnhFeTF5WGZHQ08wT1dqUE5vb24wQjk3aGxvaVVPT2l0YS0xalBnZGZXN1U1QjBuUV9jLTUxbGo4UVAwd18wWEZVMk8tUm01Ymo4X3VKYkpRMmVuZzk5MGNFU2txWjhaSW9xZnY2RVF%2Bfg%3D%3D&chksm=7b4f8dc34c3804d59765588049119d2319de296d3133c83b1bd9bf49f17baed7fe48da69ca3d#rd");
+			}else if(strstr($word,"音乐")){
+				$backWord = array('Title' =>"张仲华话语金曲" ,'Description' =>"销量可绕地球3圈" ,'MusicUrl' =>"http://dx.sc.chinaz.com/Files/DownLoad/sound1/201706/8868.mp3" ,'HQMusicUrl' =>"http://dx.sc.chinaz.com/Files/DownLoad/sound1/201706/8868.mp3");
 			}
 
 			if(is_array($backWord)){
-				$rt=$this->replyNews($backWord,$postobj);
+				if(isset($backWord['MusicUrl']) && !empty($backWord['MusicUrl']) ){
+					$rt=$this->replyMusic($postobj,$backWord);
+				}else{
+					$rt=$this->replyNews($backWord,$postobj);
+				}
 			}else{
 				$rt=$this->replyText($backWord,$postobj);
 			}
 			return $rt;
+		}
+
+
+		//回复音乐
+		public function replyMusic($postObj,$backContent){
+			$xml="<xml>
+				<ToUserName><![CDATA[%s]]></ToUserName>
+				<FromUserName><![CDATA[%s]]></FromUserName>
+				<CreateTime>%s</CreateTime>
+				<MsgType><![CDATA[music]]></MsgType>
+				<Music>
+				<Title><![CDATA[%s]]></Title>
+				<Description><![CDATA[%s]]></Description>
+				<MusicUrl><![CDATA[%s]]></MusicUrl>
+				<HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+				</Music>
+				</xml>";
+				$result=sprintf($xml,$postObj->FromUserName,$postObj->ToUserName,time(),$backContent['Title'],$backContent['Description'],$backContent['MusicUrl'],$backContent['HQMusicUrl']);
+			return $result;
+
 		}
 
 
